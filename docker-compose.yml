@@ -4,9 +4,6 @@ networks:
   tig-net:
     driver: bridge
 
-volumes:
-  tig-data:
-
 services:
 
   tsadmin:
@@ -37,8 +34,6 @@ services:
       INFLUXDB_ADMIN_PASSWORD: "accelerator"
     networks:
       - tig-net
-    volumes:
-      - tig-data:/var/lib/influxdb
 
   grafana:
     image: grafana/grafana:8.2.1
@@ -51,7 +46,8 @@ services:
     networks:
       - tig-net
     volumes:
-      - tig-data:/var/lib/grafana
+      - ./grafana-data:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning
     restart: always
 
   telegraf:
