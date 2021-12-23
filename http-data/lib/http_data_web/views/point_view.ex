@@ -30,4 +30,14 @@ defmodule HttpDataWeb.PointView do
     }
   end
 
+  def render("point.json", %{point: %HttpData.Data.Lock{} = point}) do
+    %{
+      t: point.t,
+      volume: point.volume,
+      filer: point.filer,
+      phase: point.phase,
+      state: point.state,
+    }
+  end
+
 end

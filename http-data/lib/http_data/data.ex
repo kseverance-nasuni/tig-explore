@@ -22,13 +22,14 @@ defmodule HttpData.Data do
   """
   def list_points do
     propagations() ++
+      locks() ++
       volume_infos(:rand.uniform(10))
   end
 
   defp propagations() do
     prop_kinds = [ "collab", "protect" ]
     now = DateTime.utc_now
-    Enum.map(1..2, fn _ ->
+    [
       %HttpData.Data.Propagation{
         t: DateTime.to_iso8601(now),
         filer: Enum.random(@filers),
@@ -36,7 +37,7 @@ defmodule HttpData.Data do
         prop: :rand.uniform(100),
         kind: Enum.random(prop_kinds),
       }
-    end)
+    ]
   end
 
   defp volume_infos(x) when x >= 8 do
@@ -55,6 +56,29 @@ defmodule HttpData.Data do
     ]
   end
   defp volume_infos(_), do: []
+
+  defp locks do
+    now = DateTime.utc_now
+    volume = Enum.random(@volumes)
+    filer = Enum.random(@filers)
+    phase = Enum.random(["P1", "P2"])
+    [
+      %HttpData.Data.Lock{
+        t: DateTime.to_iso8601(DateTime.add(now, -1 * :rand.uniform(60))),
+        volume: volume,
+        filer: filer,
+        phase: phase,
+        state: "ACQUIRED",
+      },
+      %HttpData.Data.Lock{
+        t: DateTime.to_iso8601(now),
+        volume: volume,
+        filer: filer,
+        phase: phase,
+        state: "RELEASED",
+      }
+    ]
+  end
 
 
 end
