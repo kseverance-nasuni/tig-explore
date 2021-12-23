@@ -1,31 +1,4 @@
 {
-  "__inputs": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.2.1"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "state-timeline",
-      "name": "State timeline",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -49,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -136,6 +109,8 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -180,7 +155,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 16,
+        "w": 12,
         "x": 4,
         "y": 0
       },
@@ -263,10 +238,10 @@
       "gridPos": {
         "h": 6,
         "w": 4,
-        "x": 20,
+        "x": 16,
         "y": 0
       },
-      "id": 11,
+      "id": 12,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -309,6 +284,79 @@
         }
       ],
       "title": "Median Prop",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.1",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "gfa_data",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "prop"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  95
+                ],
+                "type": "percentile"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "95 Percentile",
       "type": "stat"
     },
     {
@@ -458,47 +506,49 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "dark-red",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 40
+              },
+              {
+                "color": "yellow",
+                "value": 45
+              },
+              {
+                "color": "green",
+                "value": 49
+              },
+              {
+                "color": "green",
+                "value": 51
+              },
+              {
+                "color": "yellow",
+                "value": 55
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 70
               }
             ]
           }
@@ -513,42 +563,34 @@
       },
       "id": 3,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+        "displayMode": "basic",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": true
         },
-        "tooltip": {
-          "mode": "single"
-        }
+        "showUnfilled": true,
+        "text": {}
       },
+      "pluginVersion": "8.2.1",
       "targets": [
         {
           "groupBy": [
             {
               "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
                 "filer"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
           "measurement": "gfa_data",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -559,15 +601,15 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "median"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "title": "Propagation by Filer",
-      "type": "timeseries"
+      "title": "Median Prop by Filer",
+      "type": "bargauge"
     },
     {
       "datasource": null,
@@ -585,11 +627,13 @@
               "options": {
                 "ACQUIRED": {
                   "color": "yellow",
-                  "index": 0
+                  "index": 0,
+                  "text": "Locked"
                 },
                 "RELEASED": {
                   "color": "transparent",
-                  "index": 1
+                  "index": 1,
+                  "text": "Unlocked"
                 }
               },
               "type": "value"
@@ -608,7 +652,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 17
@@ -617,7 +661,7 @@
       "options": {
         "alignValue": "left",
         "legend": {
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "mergeValues": true,
@@ -629,14 +673,7 @@
       },
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "filer"
-              ],
-              "type": "tag"
-            }
-          ],
+          "groupBy": [],
           "measurement": "gfa_data",
           "orderByTime": "ASC",
           "policy": "default",
@@ -649,13 +686,19 @@
                   "state"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "Lock"
+                ],
+                "type": "alias"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "title": "Lock Events by Filer",
+      "title": "Volume Lock Usage",
       "type": "state-timeline"
     }
   ],
@@ -667,12 +710,12 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "GFA",
   "uid": "moIZ5Bo7z",
-  "version": 3
+  "version": 6
 }
